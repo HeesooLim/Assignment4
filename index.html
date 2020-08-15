@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!--
+      Author: Heesoo Lim
+      Date: August 14, 2020
+      Website Name: Slot Machine
+      File Name: index.html
+      File Description: A slot machine game page
+   -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 11 Demo</title>
+    <title>Slot Machine</title>
     <!-- CSS Section -->
     <link rel="stylesheet" href="./Contents/app.css">
 </head>
@@ -19,6 +26,20 @@
     <script src="./node_modules/preloadjs/lib/preloadjs.min.js"></script>
     
     <!-- custom Application Code -->
-    <script src="./Scripts/app.js"></script>
+
+    <!-- Config Globals -->
+    <script src="./Scripts/config/globals.js"></script>
+    <script src="./Scripts/config/screen.js"></script>
+
+    <!-- Game Objects -->
+    <script src="./Scripts/core/gameobject.js"></script>
+
+    <!-- UI Objects -->
+    <script src="./Scripts/uiobjects/label.js"></script>
+    <script src="./Scripts/uiobjects/button.js"></script>
+
+    <!-- Core script -->
+    <script src="./Scripts/core/item.js"></script>
+    <script src="./Scripts/core/app.js"></script>
 </body>
 </html>
