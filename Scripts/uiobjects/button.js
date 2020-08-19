@@ -1,11 +1,3 @@
-/*
-      Author: Heesoo Lim
-      Date: August 14, 2020
-      File Name: button.js
-      File Description: jsfile related to buttons in slot machine game page
-*/
-
-
 var UIObjects;
 (function (UIObjects) {
     class Button extends Core.GameObject {
@@ -24,6 +16,19 @@ var UIObjects;
         }
         m_mouseOut() {
             this.alpha = 1.0; // 100% opaque
+        }
+        // PUBLIC METHOD(S)
+        greyButton(isGrey) {
+            if (isGrey) {
+                this.filters = [new createjs.ColorFilter(0.6, 0.6, 0.6, 1, 1, 1, -255, 0)];
+                this.cache(0, 0, 67, 67);
+                this.mouseEnabled = false;
+            }
+            else {
+                this.filters = null;
+                this.cache = null;
+                this.mouseEnabled = true;
+            }
         }
     }
     UIObjects.Button = Button;

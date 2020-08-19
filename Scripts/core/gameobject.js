@@ -1,11 +1,3 @@
-/*
-      Author: Heesoo Lim
-      Date: August 14, 2020
-      File Name: label.js
-      File Description: jsfile related to objects in slot machine game page
-*/
-
-
 var Core;
 (function (Core) {
     class GameObject extends createjs.Bitmap {

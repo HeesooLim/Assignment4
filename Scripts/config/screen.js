@@ -1,11 +1,3 @@
-/*
-      Author: Heesoo Lim
-      Date: August 14, 2020
-      File Name: screen.js
-      File Description: jsfile getting the screen center of the slot machine game page
-*/
-
-
 var Config;
 (function (Config) {
     class Screen {

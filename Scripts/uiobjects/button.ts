@@ -31,6 +31,21 @@ module UIObjects
         }
 
         // PUBLIC METHOD(S)
-        
+        public greyButton(isGrey: boolean): void
+        {
+            if(isGrey)
+            {
+                this.filters = [ new createjs.ColorFilter(0.6, 0.6,0.6,1,1,1,-255,0)];
+                this.cache(0, 0, 67, 67);
+                this.mouseEnabled = false;
+            }
+            else
+            {
+                this.filters = null;
+                this.cache = null;
+                this.mouseEnabled = true;
+            }
+            
+        }
     }
 }

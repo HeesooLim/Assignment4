@@ -1,10 +1,3 @@
-/*
-      Author: Heesoo Lim
-      Date: August 14, 2020
-      File Name: app.js
-      File Description: core jsfile for slot machine game page
-*/
-
 (function () {
     // Function scoped Variables
     let stage;
@@ -65,7 +58,6 @@
         assets.on('complete', Start);
         assets.loadManifest(manifest);
     }
-
     // This function triggers after everything has been preloaded
     // This function is used for config and initialization
     function Start() {
@@ -78,65 +70,143 @@
         Config.Globals.AssetManifest = assets;
         Main();
     }
-
     // called every frame
     function Update() {
         stage.update();
     }
-
-    /* Utility function to check if a value falls within a range of bounds------ */
-    function checkRange(value, lowerBounds, upperBounds) {
-        if (value >= lowerBounds && value <= upperBounds) {
-            return value;
+    function createProbability() {
+        let blanks = Array(27).fill('blank');
+        let grapes = Array(10).fill('grapes');
+        let bananas = Array(9).fill('banana');
+        let oranges = Array(8).fill('orange');
+        let cherries = Array(5).fill('cherry');
+        let bars = Array(3).fill('bar');
+        let bells = Array(2).fill('bell');
+        let probabilities = [].concat(blanks, grapes, bananas, oranges, cherries, bars, bells, 'seven');
+        return probabilities;
+    }
+    function spinReels(probabilityArray) {
+        let reels = ["", "", ""];
+        for (let index = 0; index < 3; index++) {
+            reels[index] = probabilityArray[Math.floor(Math.random() * 64 + 1)];
         }
-        else {
-            return !value;
+        console.log(reels);
+        checkWinning(reels);
+        return reels;
+    }
+    function disableButtons() {
+        if (playerMoney < 100) {
+            bet100Button.greyButton(true);
+            if (playerMoney < 10) {
+                bet10Button.greyButton(true);
+                if (playerMoney < 1) {
+                    bet1Button.greyButton(true);
+                    if (playerMoney <= 0) {
+                        spinButton.greyButton(true);
+                        betMaxButton.greyButton(true);
+                        replenishPlayerMoney();
+                    }
+                }
+            }
         }
     }
-
-    function Reels() {
-        let betLine = [" ", " ", " "];
-        let outCome = [0, 0, 0];
-        for (var spin = 0; spin < 3; spin++) {
-            outCome[spin] = Math.floor((Math.random() * 65) + 1);
-            switch (outCome[spin]) {
-                case checkRange(outCome[spin], 1, 27): // 41.5% probability
-                    betLine[spin] = "blank";
-                    blanks++;
+    function replenishPlayerMoney() {
+        // Button is not changed to original color -- needed to be fixed
+        window.alert("You don't have enough money. Do you want to play again?");
+        playerMoney = 1000;
+        creditLabel.setText(playerMoney.toString());
+        bet100Button.greyButton(false);
+        bet10Button.greyButton(false);
+        bet1Button.greyButton(false);
+        betMaxButton.greyButton(false);
+        spinButton.greyButton(false);
+    }
+    function checkWinning(reels) {
+        winnings = 0;
+        let duplicateNum = 0;
+        let duplicatedValue = "";
+        let multiplyNum = 0;
+        if (reels[0] === reels[1]) {
+            duplicateNum++;
+            duplicatedValue = reels[0];
+        }
+        if (reels[0] === reels[2]) {
+            duplicateNum++;
+            duplicatedValue = reels[0];
+        }
+        if (reels[1] === reels[2] && duplicateNum <= 1) {
+            duplicateNum++;
+            duplicatedValue = reels[1];
+        }
+        if (duplicateNum >= 2) {
+            switch (duplicatedValue) {
+                case 'grapes':
+                    multiplyNum = 10;
                     break;
-                case checkRange(outCome[spin], 28, 37): // 15.4% probability
-                    betLine[spin] = "grapes";
-                    grapes++;
+                case 'banana':
+                    multiplyNum = 20;
                     break;
-                case checkRange(outCome[spin], 38, 46): // 13.8% probability
-                    betLine[spin] = "banana";
-                    bananas++;
+                case 'orange':
+                    multiplyNum = 30;
                     break;
-                case checkRange(outCome[spin], 47, 54): // 12.3% probability
-                    betLine[spin] = "orange";
-                    oranges++;
+                case 'cherry':
+                    multiplyNum = 40;
                     break;
-                case checkRange(outCome[spin], 55, 59): //  7.7% probability
-                    betLine[spin] = "cherry";
-                    cherries++;
+                case 'bar':
+                    multiplyNum = 50;
                     break;
-                case checkRange(outCome[spin], 60, 62): //  4.6% probability
-                    betLine[spin] = "bar";
-                    bars++;
+                case 'bell':
+                    multiplyNum = 75;
                     break;
-                case checkRange(outCome[spin], 63, 64): //  3.1% probability
-                    betLine[spin] = "bell";
-                    bells++;
+                case 'seven':
+                    multiplyNum = 100;
                     break;
-                case checkRange(outCome[spin], 65, 65): //  1.5% probability
-                    betLine[spin] = "seven";
-                    sevens++;
+                default:
+                    multiplyNum = 0;
                     break;
             }
         }
-        return betLine;
+        else if (duplicateNum === 1) {
+            switch (duplicatedValue) {
+                case 'grapes':
+                    multiplyNum = 2;
+                    break;
+                case 'banana':
+                    multiplyNum = 2;
+                    break;
+                case 'orange':
+                    multiplyNum = 3;
+                    break;
+                case 'cherry':
+                    multiplyNum = 4;
+                    break;
+                case 'bar':
+                    multiplyNum = 5;
+                    break;
+                case 'bell':
+                    multiplyNum = 10;
+                    break;
+                case 'seven':
+                    multiplyNum = 20;
+                    break;
+                default:
+                    multiplyNum = 0;
+                    break;
+            }
+            if (reels.indexOf('seven') > -1 && duplicatedValue !== 'seven') {
+                winnings = playerBet * 5;
+            }
+        }
+        else {
+            if (reels.indexOf('seven') > -1) {
+                winnings = playerBet * 5;
+            }
+        }
+        winnings += playerBet * multiplyNum;
+        playerMoney += winnings;
+        creditLabel.setText(playerMoney.toString());
+        winningsLabel.setText(winnings.toString());
     }
-
     function betMoney(betAmount) {
         if (playerMoney >= betAmount) {
             playerMoney -= betAmount;
@@ -145,10 +215,9 @@
             creditLabel.setText(playerMoney.toString());
         }
     }
-
     function buildInterface() {
         // Slot Machine Background
-        slotMachineBackground = new Core.GameObject('background', Config.Screen.CENTER_X, Config.Screen.CERTER_Y, true);
+        slotMachineBackground = new Core.GameObject("background", Config.Screen.CENTER_X, Config.Screen.CERTER_Y, true);
         stage.addChild(slotMachineBackground);
         // Buttons
         spinButton = new UIObjects.Button('spinButton', Config.Screen.CENTER_X + 135, Config.Screen.CERTER_Y + 176, true);
@@ -162,11 +231,11 @@
         betMaxButton = new UIObjects.Button('betMaxButton', Config.Screen.CENTER_X + 68, Config.Screen.CERTER_Y + 176, true);
         stage.addChild(betMaxButton);
         // Labels
-        jackPotLabel = new UIObjects.Label(jackpot, '20px', 'Consolas', '#FF0000', Config.Screen.CENTER_X, Config.Screen.CERTER_Y - 175, true);
+        jackPotLabel = new UIObjects.Label('99999999', '20px', 'Consolas', '#FF0000', Config.Screen.CENTER_X, Config.Screen.CERTER_Y - 175, true);
         stage.addChild(jackPotLabel);
         creditLabel = new UIObjects.Label(playerMoney.toString(), '20px', 'Consolas', '#FF0000', Config.Screen.CENTER_X - 95, Config.Screen.CERTER_Y + 107, true);
         stage.addChild(creditLabel);
-        winningsLabel = new UIObjects.Label(winnings, '20px', 'Consolas', '#FF0000', Config.Screen.CENTER_X + 94, Config.Screen.CERTER_Y + 107, true);
+        winningsLabel = new UIObjects.Label(winnings.toString(), '20px', 'Consolas', '#FF0000', Config.Screen.CENTER_X + 94, Config.Screen.CERTER_Y + 107, true);
         stage.addChild(winningsLabel);
         betLabel = new UIObjects.Label(playerBet.toString(), '20px', 'Consolas', '#FF0000', Config.Screen.CENTER_X, Config.Screen.CERTER_Y + 107, true);
         stage.addChild(betLabel);
@@ -181,11 +250,11 @@
         betLine = new Core.GameObject('bet_line', Config.Screen.CENTER_X, Config.Screen.CERTER_Y - 11, true);
         stage.addChild(betLine);
     }
-
     function interfaceLogic() {
         spinButton.on('click', () => {
+            let probability = createProbability();
             // reel test
-            let reels = Reels();
+            let reels = spinReels(probability);
             if (playerBet > 0) {
                 // example of how to replace the images in the reels
                 leftReel.image = assets.getResult(reels[0]);
@@ -193,26 +262,22 @@
                 rightReel.image = assets.getResult(reels[2]);
                 playerBet = 0;
                 betLabel.setText(playerBet.toString());
+                disableButtons();
             }
         });
         bet1Button.on('click', () => {
-            console.log('Bet 1 Button Button Clicked');
             betMoney(1);
         });
         bet10Button.on('click', () => {
-            console.log('Bet 10 Button Button Clicked');
             betMoney(10);
         });
         bet100Button.on('click', () => {
-            console.log('Bet 100 Button Button Clicked');
             betMoney(100);
         });
         betMaxButton.on('click', () => {
-            console.log('Bet max Button Button Clicked');
             betMoney(playerMoney);
         });
     }
-
     // app logic goes here
     function Main() {
         buildInterface();

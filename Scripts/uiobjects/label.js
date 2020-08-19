@@ -1,12 +1,4 @@
-
-    /*
-      Author: Heesoo Lim
-      Date: August 14, 2020
-      File Name: label.js
-      File Description: jsfile related to labels in slot machine game page
-    */
-
-    var UIObjects;
+var UIObjects;
 (function (UIObjects) {
     class Label extends createjs.Text {
         // CONSTRUCTOR(S)

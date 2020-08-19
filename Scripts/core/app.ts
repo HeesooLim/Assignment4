@@ -17,11 +17,11 @@
     let rightReel: Core.GameObject;
     let betLine: Core.GameObject;
 
-    let playerMoney = 1000;
-    let winnings = 0;
-    let jackpot = 5000;
+    let playerMoney: number = 1000;
+    let winnings: number = 0;
+    let jackpot: number = 5000;
     let turn = 0;
-    let playerBet = 0;
+    let playerBet: number = 0;
     let winNumber = 0;
     let lossNumber = 0;
     let spinResult;
@@ -88,61 +88,177 @@
         stage.update();
     }
 
-    /* Utility function to check if a value falls within a range of bounds------ */
-    function checkRange(value: number, lowerBounds: number, upperBounds: number): number | boolean 
+    function createProbability(): string[]
     {
-        if (value >= lowerBounds && value <= upperBounds)
+        let blanks = Array<string>(27).fill('blank');
+        let grapes = Array<string>(10).fill('grapes');
+        let bananas = Array<string>(9).fill('banana');
+        let oranges = Array<string>(8).fill('orange');
+        let cherries = Array<string>(5).fill('cherry');
+        let bars = Array<string>(3).fill('bar');
+        let bells = Array<string>(2).fill('bell');
+        let probabilities: string[] = [].concat(blanks, grapes, bananas, oranges, cherries, bars, bells, 'seven');
+        return probabilities;
+    }
+
+    function spinReels(probabilityArray: string[]): string[]
+    {
+        let reels: string[] = ["", "", ""];
+        for (let index = 0; index < 3; index++) 
         {
-            return value;
+            reels[index] = probabilityArray[Math.floor(Math.random() * 64 + 1)];
+            
         }
-        else {
-            return !value;
-        }
+        console.log(reels);
+        checkWinning(reels);
+        
+        return reels;
     }
 
-    function Reels(): string[] {
-    let betLine = [" ", " ", " "];
-    let outCome = [0, 0, 0];
+    function disableButtons()
+    {
+        if(playerMoney < 100)
+        {
+            bet100Button.greyButton(true);
 
-    for (var spin = 0; spin < 3; spin++) {
-        outCome[spin] = Math.floor((Math.random() * 65) + 1);
-        switch (outCome[spin]) {
-            case checkRange(outCome[spin], 1, 27):  // 41.5% probability
-                betLine[spin] = "blank";
-                blanks++;
-                break;
-            case checkRange(outCome[spin], 28, 37): // 15.4% probability
-                betLine[spin] = "grapes";
-                grapes++;
-                break;
-            case checkRange(outCome[spin], 38, 46): // 13.8% probability
-                betLine[spin] = "banana";
-                bananas++;
-                break;
-            case checkRange(outCome[spin], 47, 54): // 12.3% probability
-                betLine[spin] = "orange";
-                oranges++;
-                break;
-            case checkRange(outCome[spin], 55, 59): //  7.7% probability
-                betLine[spin] = "cherry";
-                cherries++;
-                break;
-            case checkRange(outCome[spin], 60, 62): //  4.6% probability
-                betLine[spin] = "bar";
-                bars++;
-                break;
-            case checkRange(outCome[spin], 63, 64): //  3.1% probability
-                betLine[spin] = "bell";
-                bells++;
-                break;
-            case checkRange(outCome[spin], 65, 65): //  1.5% probability
-                betLine[spin] = "seven";
-                sevens++;
-                break;
+            if(playerMoney < 10)
+            {
+                bet10Button.greyButton(true);
+
+                if(playerMoney < 1)
+                {
+                    bet1Button.greyButton(true);
+
+                    if(playerMoney <= 0)
+                    {
+                        spinButton.greyButton(true);
+                        betMaxButton.greyButton(true);
+                        replenishPlayerMoney();
+                    }
+                }
+            }
         }
+        
     }
-    return betLine;
-}
+
+    function replenishPlayerMoney()
+    {
+        // Button is not changed to original color -- needed to be fixed
+        window.alert("You don't have enough money. Do you want to play again?");
+        playerMoney = 1000;
+        creditLabel.setText(playerMoney.toString());
+        bet100Button.greyButton(false);
+        bet10Button.greyButton(false);
+        bet1Button.greyButton(false);
+        betMaxButton.greyButton(false);
+        spinButton.greyButton(false);
+    }
+
+    function checkWinning(reels: string[])
+    {
+        winnings = 0;
+        let duplicateNum = 0;
+        let duplicatedValue = "";
+        let multiplyNum = 0;
+        
+        if(reels[0] === reels[1])
+        {
+            duplicateNum++;
+            duplicatedValue = reels[0];
+        }
+        if(reels[0] === reels[2])
+        {
+            duplicateNum++;
+            duplicatedValue = reels[0];
+        }
+        if(reels[1] === reels[2] && duplicateNum <= 1)
+        {
+            duplicateNum++;
+            duplicatedValue = reels[1];
+        }
+
+        if(duplicateNum >= 2)
+        {
+            switch (duplicatedValue) 
+            {
+                case 'grapes':
+                    multiplyNum = 10;
+                    break;
+                case 'banana':
+                    multiplyNum = 20;
+                    break;
+                case 'orange':
+                    multiplyNum = 30;
+                    break;
+                case 'cherry':
+                    multiplyNum = 40;
+                    break;
+                case 'bar':
+                    multiplyNum = 50;
+                    break;
+                case 'bell':
+                    multiplyNum = 75;
+                    break;
+                case 'seven':
+                    multiplyNum = 100;
+                    break;
+                default:
+                    multiplyNum = 0;
+                    break;
+            }
+        }
+
+        else if(duplicateNum === 1)
+        {
+            switch (duplicatedValue) 
+            {
+                case 'grapes':
+                    multiplyNum = 2;
+                    break;
+                case 'banana':
+                    multiplyNum = 2;
+                    break;
+                case 'orange':
+                    multiplyNum = 3;
+                    break;
+                case 'cherry':
+                    multiplyNum = 4;
+                    break;
+                case 'bar':
+                    multiplyNum = 5;
+                    break;
+                case 'bell':
+                    multiplyNum = 10;
+                    break;
+                case 'seven':
+                    multiplyNum = 20;
+                    break;
+                default:
+                    multiplyNum = 0;
+                    break;
+            }
+
+            if(reels.indexOf('seven') > -1 && duplicatedValue !== 'seven')
+            {
+                winnings = playerBet * 5;
+            }
+        }
+        else
+        {
+            if(reels.indexOf('seven') > -1)
+            {
+                winnings = playerBet * 5;
+            }
+        }
+
+        winnings += playerBet * multiplyNum;
+
+        playerMoney += winnings;
+
+        creditLabel.setText(playerMoney.toString());
+
+        winningsLabel.setText(winnings.toString());
+    }
 
     function betMoney(betAmount: number): void
     {
@@ -158,7 +274,7 @@
     function buildInterface(): void
     {
         // Slot Machine Background
-        slotMachineBackground = new Core.GameObject('background', Config.Screen.CENTER_X, Config.Screen.CERTER_Y, true);
+        slotMachineBackground = new Core.GameObject("background", Config.Screen.CENTER_X, Config.Screen.CERTER_Y, true );
         stage.addChild(slotMachineBackground);
 
         // Buttons
@@ -184,7 +300,7 @@
         creditLabel = new UIObjects.Label(playerMoney.toString(), '20px', 'Consolas', '#FF0000', Config.Screen.CENTER_X - 95, Config.Screen.CERTER_Y + 107, true);
         stage.addChild(creditLabel);
 
-        winningsLabel = new UIObjects.Label('99999999', '20px', 'Consolas', '#FF0000', Config.Screen.CENTER_X + 94, Config.Screen.CERTER_Y + 107, true);
+        winningsLabel = new UIObjects.Label(winnings.toString(), '20px', 'Consolas', '#FF0000', Config.Screen.CENTER_X + 94, Config.Screen.CERTER_Y + 107, true);
         stage.addChild(winningsLabel);
 
         betLabel = new UIObjects.Label(playerBet.toString(), '20px', 'Consolas', '#FF0000', Config.Screen.CENTER_X, Config.Screen.CERTER_Y + 107, true);
@@ -210,8 +326,9 @@
 
         spinButton.on('click', () => {
 
+            let probability: string[] = createProbability();
             // reel test
-            let reels = Reels();
+            let reels = spinReels(probability);
 
             if(playerBet > 0)
             {
@@ -221,26 +338,23 @@
                 rightReel.image = assets.getResult(reels[2]) as HTMLImageElement;
                 playerBet = 0;
                 betLabel.setText(playerBet.toString());
+                disableButtons();
             }
         });
 
         bet1Button.on('click', () => {
-            console.log('Bet 1 Button Button Clicked');
             betMoney(1);
         });
 
         bet10Button.on('click', () => {
-            console.log('Bet 10 Button Button Clicked');
             betMoney(10);
         });
 
         bet100Button.on('click', () => {
-            console.log('Bet 100 Button Button Clicked');
             betMoney(100);
         });
 
         betMaxButton.on('click', () => {
-            console.log('Bet max Button Button Clicked');
             betMoney(playerMoney);
         });
     }
