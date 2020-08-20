@@ -1,5 +1,12 @@
 module UIObjects
 {
+    /*
+      Author: Heesoo Lim
+      Date: August 20, 2020
+      File Name: label.ts
+      Website Name: Slot Machine
+      File Description: label object in slot machine game page
+   */
     export class Label extends createjs.Text
     {
         // PRIVATE FIELDS (CLASS MEMBERS)

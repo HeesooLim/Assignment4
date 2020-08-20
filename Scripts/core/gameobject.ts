@@ -1,5 +1,13 @@
 module Core
 {
+    /*
+      Author: Heesoo Lim
+      Date: August 20, 2020
+      File Name: gameobject.ts
+      Website Name: Slot Machine
+      File Description: game objects in slot machine game page
+   */
+
     export class GameObject extends createjs.Bitmap
     {
         // PRIVATE FIELDS (CLASS MEMBERS)

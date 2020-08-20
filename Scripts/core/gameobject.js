@@ -1,5 +1,12 @@
 var Core;
 (function (Core) {
+    /*
+      Author: Heesoo Lim
+      Date: August 20, 2020
+      File Name: gameobject.js
+      Website Name: Slot Machine
+      File Description: game objects in slot machine game page
+   */
     class GameObject extends createjs.Bitmap {
         // CONSTRUCTOR(S)
         constructor(bitmap_asset, x = 0, y = 0, isCentered = false) {

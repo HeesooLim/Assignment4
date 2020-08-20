@@ -1,5 +1,12 @@
 var UIObjects;
 (function (UIObjects) {
+    /*
+      Author: Heesoo Lim
+      Date: August 20, 2020
+      File Name: button.js
+      Website Name: Slot Machine
+      File Description: button object in slot machine game page
+   */
     class Button extends Core.GameObject {
         // PRIVATE FIELDS (CLASS MEMBERS)
         // PUBLIC PROPERTIES
@@ -18,6 +25,7 @@ var UIObjects;
             this.alpha = 1.0; // 100% opaque
         }
         // PUBLIC METHOD(S)
+        // change mouse enabled status and add a color filter
         greyButton(isGrey) {
             if (isGrey) {
                 this.filters = [new createjs.ColorFilter(0.5, 0.5, 0.5, 1, 1, 1, 1, 1)];

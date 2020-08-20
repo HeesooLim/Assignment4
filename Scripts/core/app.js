@@ -1,3 +1,10 @@
+/*
+    Author: Heesoo Lim
+    Date: August 20, 2020
+    File Name: app.js
+    Website Name: Slot Machine
+    File Description: core ts file in a slot machine game page
+*/
 (function () {
     // Function scoped Variables
     let stage;

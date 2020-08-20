@@ -1,5 +1,13 @@
 module UIObjects
 {
+    /*
+      Author: Heesoo Lim
+      Date: August 20, 2020
+      File Name: button.ts
+      Website Name: Slot Machine
+      File Description: button object in slot machine game page
+   */
+
     export class Button extends Core.GameObject
     {
         // PRIVATE FIELDS (CLASS MEMBERS)
@@ -31,6 +39,8 @@ module UIObjects
         }
 
         // PUBLIC METHOD(S)
+
+        // change mouse enabled status and add a color filter
         public greyButton(isGrey: boolean): void
         {
             if(isGrey)

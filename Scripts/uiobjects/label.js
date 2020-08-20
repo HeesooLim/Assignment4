@@ -1,5 +1,12 @@
 var UIObjects;
 (function (UIObjects) {
+    /*
+      Author: Heesoo Lim
+      Date: August 20, 2020
+      File Name: label.js
+      Website Name: Slot Machine
+      File Description: label object in slot machine game page
+   */
     class Label extends createjs.Text {
         // CONSTRUCTOR(S)
         constructor(text = "", font_size = "20px", font_family = "Arial", font_color = "#000000", x = 0, y = 0, isCentered = false) {
