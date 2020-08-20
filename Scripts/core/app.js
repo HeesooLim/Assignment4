@@ -224,6 +224,9 @@
     }
     function resumeGame() {
         enableButton(true);
+        if (playerMoney <= 0) {
+            replenishButton.greyButton(false);
+        }
     }
     function betMoney(betAmount) {
         if (playerMoney >= betAmount) {
