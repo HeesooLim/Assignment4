@@ -21,12 +21,12 @@ var UIObjects;
         greyButton(isGrey) {
             if (isGrey) {
                 this.filters = [new createjs.ColorFilter(0.5, 0.5, 0.5, 1, 1, 1, 1, 1)];
-                this.cache(0, 0, 67, 67);
+                this.cache(0, 0, 100, 100);
                 this.mouseEnabled = false;
             }
             else {
                 this.filters = [new createjs.ColorFilter(1, 1, 1, 1, 1, 1, 1, 1)];
-                this.cache(0, 0, 67, 67);
+                this.cache(0, 0, 100, 100);
                 this.mouseEnabled = true;
             }
         }
