@@ -8,6 +8,7 @@
     let bet10Button: UIObjects.Button;
     let bet100Button: UIObjects.Button;
     let betMaxButton: UIObjects.Button;
+    let replenishButton: UIObjects.Button;
     let jackPotLabel: UIObjects.Label;
     let creditLabel: UIObjects.Label;
     let winningsLabel: UIObjects.Label;
@@ -52,6 +53,7 @@
         {id: "orange", src: "./Assets/images/orange.gif"},
         {id: "seven", src: "./Assets/images/seven.gif"},
         {id: "spinButton", src: "./Assets/images/spinButton.png"},
+        {id: "replenishButton", src: "./Assets/images/replenishButton.png"}
     ];
 
     // This function triggers first and 'Preloads' all the assets
@@ -78,7 +80,7 @@
         stage.enableMouseOver(20);
 
         Config.Globals.AssetManifest = assets;
-
+        
         Main();
     }
 
@@ -115,8 +117,9 @@
         return reels;
     }
 
-    function disableButtons()
+    function buttonCheck()
     {
+        // according to the player's money, button is disabled
         if(playerMoney < 100)
         {
             bet100Button.greyButton(true);
@@ -133,20 +136,19 @@
                     {
                         spinButton.greyButton(true);
                         betMaxButton.greyButton(true);
-                        replenishPlayerMoney();
                     }
                 }
             }
         }
+        else
+        {
+            enableButton();
+        }
         
     }
 
-    function replenishPlayerMoney()
+    function enableButton()
     {
-        // Button is not changed to original color -- needed to be fixed
-        window.alert("You don't have enough money. Do you want to play again?");
-        playerMoney = 1000;
-        creditLabel.setText(playerMoney.toString());
         bet100Button.greyButton(false);
         bet10Button.greyButton(false);
         bet1Button.greyButton(false);
@@ -293,6 +295,9 @@
         betMaxButton = new UIObjects.Button('betMaxButton', Config.Screen.CENTER_X + 68, Config.Screen.CERTER_Y + 176, true);
         stage.addChild(betMaxButton);
 
+        replenishButton = new UIObjects.Button('replenishButton', 65, 40, true);
+        stage.addChild(replenishButton);
+
         // Labels
         jackPotLabel = new UIObjects.Label('99999999', '20px', 'Consolas', '#FF0000', Config.Screen.CENTER_X, Config.Screen.CERTER_Y - 175, true);
         stage.addChild(jackPotLabel);
@@ -323,6 +328,19 @@
 
     function interfaceLogic(): void
     {
+        replenishButton.on('click', () => 
+        {
+            console.log('money replenished');
+            if(playerMoney <= 0 && playerBet <= 0)
+            {
+                enableButton();
+                playerMoney = 1000;
+                creditLabel.setText(playerMoney.toString());
+            }
+        });
+
+        // by default, spin button is disabled
+        spinButton.greyButton(true);
 
         spinButton.on('click', () => {
 
@@ -336,26 +354,33 @@
                 leftReel.image = assets.getResult(reels[0]) as HTMLImageElement;
                 middleReel.image = assets.getResult(reels[1]) as HTMLImageElement;
                 rightReel.image = assets.getResult(reels[2]) as HTMLImageElement;
+                
                 playerBet = 0;
                 betLabel.setText(playerBet.toString());
-                disableButtons();
+                buttonCheck();
+                spinButton.greyButton(true);
             }
         });
 
+        // if the user bet money, spin button is enabled
         bet1Button.on('click', () => {
             betMoney(1);
+            spinButton.greyButton(false);
         });
 
         bet10Button.on('click', () => {
             betMoney(10);
+            spinButton.greyButton(false);
         });
 
         bet100Button.on('click', () => {
             betMoney(100);
+            spinButton.greyButton(false);
         });
 
         betMaxButton.on('click', () => {
             betMoney(playerMoney);
+            spinButton.greyButton(false);
         });
     }
 
