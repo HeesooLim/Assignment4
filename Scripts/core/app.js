@@ -1,7 +1,8 @@
 /*
     Author: Heesoo Lim
+    studentID: 301061152
     Date: August 20, 2020
-    File Name: app.ts
+    File Name: app.js
     Website Name: Slot Machine
     File Description: core ts file in a slot machine game page
 */

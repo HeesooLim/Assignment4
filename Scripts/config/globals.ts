@@ -2,6 +2,7 @@ module Config
 {
     /*
     Author: Heesoo Lim
+    studentID: 301061152
     Date: August 20, 2020
     File Name: globals.ts
     Website Name: Slot Machine
