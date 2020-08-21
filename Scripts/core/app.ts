@@ -291,7 +291,8 @@
     function resumeGame()
     {
         enableButton(true);
-        if(playerMoney <= 0)
+        spinButton.greyButton(true);
+        if(playerMoney <= 0 && playerBet <= 0)
         {
             replenishButton.greyButton(false);
         }
